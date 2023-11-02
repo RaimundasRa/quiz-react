@@ -6,6 +6,7 @@ import Error from "./Error.js";
 import { useReducer } from "react";
 import StartScreen from "./StartScreen.js";
 import Question from "./Question.js";
+import NextButton from "./NextButton.js";
 
 const initialState = {
     questions: [],
@@ -42,6 +43,8 @@ function reducer(state, action) {
                         ? state.points + question.points
                         : state.points,
             };
+        case "nextQuestion":
+            return { ...state, index: state.index + 1, answer: null };
         default:
             throw new Error("Action unknown");
     }
@@ -76,11 +79,14 @@ export default function App() {
                     />
                 )}
                 {status === "active" && (
-                    <Question
-                        question={questions[index]}
-                        dispatch={dispatch}
-                        answer={answer}
-                    />
+                    <>
+                        <Question
+                            question={questions[index]}
+                            answer={answer}
+                            dispatch={dispatch}
+                        />
+                        <NextButton dispatch={dispatch} answer={answer} />
+                    </>
                 )}
             </Main>
         </div>
